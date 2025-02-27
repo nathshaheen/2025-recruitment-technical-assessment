@@ -22,6 +22,46 @@ describe("Task 1", () => {
       const response = await getTask1("");
       expect(response.status).toBe(400);
     });
+
+    it("custom1", async () => {
+      const response = await getTask1("meatball");
+      expect(response.body).toStrictEqual({ msg: "Meatball" });
+    });
+
+    it("custom2", async () => {
+      const response = await getTask1("Skibidi spaghetti");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("custom3", async () => {
+      const response = await getTask1("alpHa alFRedo");
+      expect(response.body).toStrictEqual({ msg: "Alpha Alfredo" });
+    });
+
+    it("custom4", async () => {
+      const response = await getTask1("Skibidi   spaghetti");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("custom5", async () => {
+      const response = await getTask1("Skibidi spaghetti    ");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("custom6", async () => {
+      const response = await getTask1("Skibidi___Spaghetti  ");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("custom7", async () => {
+      const response = await getTask1(" __ Skibidi Spaghetti");
+      expect(response.body).toStrictEqual({ msg: "Skibidi Spaghetti" });
+    });
+
+    it("custom8", async () => {
+      const response = await getTask1(" __ Sk1!109#21ib-idi Spa09()gHe_-_00___tT[{}i");
+      expect(response.body).toStrictEqual({ msg: "Skib Idi Spaghe Tti" });
+    });
   });
 });
 
@@ -93,6 +133,22 @@ describe("Task 2", () => {
       });
       expect(resp3.status).toBe(400);
     });
+
+    it("custom1", async () => {
+      const resp = await putTask2({
+        type: "recipe",
+        name: "Skibidi Spaghetti",
+        requiredItems: [{name: "Meatball", quantity: 3}, {name: "Pasta", quantity: 1}, {name: "Tomato", quantity: 2}]
+      });
+      expect(resp.status).toBe(200);
+
+      const resp2 = await putTask2({
+        type: "recipe",
+        name: "Pasta",
+        requiredItems: [{name: "Flour", quantity: 3}, {name: "Egg", quantity: 1}]
+      });
+      expect(resp2.status).toBe(200);
+    });
   });
 });
 
@@ -156,6 +212,35 @@ describe("Task 3", () => {
 
       const resp3 = await getTask3("Skibidi");
       expect(resp3.status).toBe(200);
+    });
+
+    it("custom1", async () => {
+      const spaghetti = {
+        type: "recipe",
+        name: "Spaghetti",
+        requiredItems: [{name: "Meatball", quantity: 3}, {name: "Pasta", quantity: 1}, {name: "Tomato", quantity: 2}]
+      };
+      const resp = await postEntry(spaghetti);
+      expect(resp.status).toBe(200);
+
+      const flour = {
+        "type": "ingredient",
+        "name": "Flour",
+        "cookTime": 0
+      };
+      const resp2 = await postEntry(flour);
+      expect(resp2.status).toBe(200);
+
+      const tomato = {
+        "type": "ingredient",
+        "name": "Tomato",
+        "cookTime": 2,
+      };
+      const resp3 = await postEntry(tomato);
+      expect(resp3.status).toBe(200);
+
+      const resp4 = await getTask3("Spaghetti");
+      expect(resp4.status).toBe(200);
     });
   });
 });
